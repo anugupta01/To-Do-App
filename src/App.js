@@ -2,21 +2,25 @@ import React from 'react';
 import './App.css';
 import ListItems from './ListItems'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faTrash)
-library.add(faCheck)
+library.add(faEdit)
+library.add(faPlus)
 
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      items:[],
+      items:[],hashTag : null,inputHashText: '',
+      showTag:false,filterSymbol:[],
       currentItem:{
         text:'',
         key:'',
-        completed:false
+        completed:false,
+        tags:[],
       }
     }
 
@@ -27,6 +31,7 @@ class App extends React.Component {
     this.clearList = this.clearList.bind(this);
     this.setUpdate = this.setUpdate.bind(this);
   }
+
   addItem(e){
     e.preventDefault();
     const newItem = this.state.currentItem;
@@ -37,7 +42,8 @@ class App extends React.Component {
       currentItem:{
         text:'',
         key:'',
-        completed :false
+        completed :false,
+        tags:[]
       }
     })
     }
@@ -47,36 +53,65 @@ class App extends React.Component {
       currentItem:{
         text: e.target.value,
         key: Date.now(),
-        completed: false
+        completed: false,
+        tags:[]
       }
     })
   }
+
+  addInputTag = (item) =>{
+     this.setState({
+       showTag:true,
+       hashTag:item
+    })
+   }
+
+   handleTagInput=(e)=>{
+      this.setState({
+        inputHashText:'#'+ e.target.value,
+      })
+   }
+
+   addTag = () => {
+     const tagItem = this.state.hashTag;
+     const items = this.state.items;
+      tagItem.tags.push(this.state.inputHashText);
+      this.setState({
+      items:items,
+       showTag:false
+     })
+   }
+
+   filterHashTag=(tag)=>{
+     const items = this.state.items
+       const filterSymbol = [];
+       items.forEach((item)=>{
+           for(let t of item.tags){
+               if(t===tag){ filterSymbol.push(item); break;}
+           }
+       })
+this.setState({
+   filterSymbol:this.state.items,
+   items : filterSymbol
+})
+   }
+
   deleteItem(key){
     const filteredItems= this.state.items.filter(item =>
       item.key!==key);
-    console.log("Anu Delete")
     this.setState({
       items: filteredItems
     })
   }
 
   completeItem(item){
-    console.log("key:",this.state.items);
     const items = this.state.items;
     let currentItem = items.indexOf(item)
-    console.log("currentItem",currentItem)
     const completedItem = items[currentItem];
     completedItem.completed = true;
     this.setState( {
      items : items
     });
-
-    // const newTasks = this.state.items.filter(item =>
-    //     item.key.text===true);
-    // this.setState({
-    //   items: newTasks.push(this)
-    // })
-    // console.log("newTasks:",newTasks);
   }
 
   handleEdit = id => {
@@ -86,7 +121,8 @@ class App extends React.Component {
       items: filteredItems,
       item: selectedItem.title,
       id: id,
-      editItem: true
+      editItem: true,
+      tags:[]
     });
   };
 
@@ -97,7 +133,6 @@ class App extends React.Component {
   };
 
   setUpdate(text,key){
-    console.log("items:",this.state.items);
     const items = this.state.items;
    items.map(item=>{
       if(item.key===key){
@@ -114,16 +149,18 @@ class App extends React.Component {
     <div className="App">
       <header>
         <form id="to-do-form" onSubmit={this.addItem}>
-          <input type="text" placeholder="Enter task" value= {this.state.currentItem.text} onChange={this.handleInput}></input>
+          <input  type="text" placeholder="Enter task" value= {this.state.currentItem.text} onChange={this.handleInput}></input>
           <button type="submit">Add</button>
         </form>
 
         <form id="clear-form" onClick={this.clearList}>
           <button type="button">Clear All</button></form>
         <p>{this.state.items.text}</p>
-        
-          <ListItems items={this.state.items} deleteItem={this.deleteItem} completeItem={this.completeItem}
-                     handleEdit={this.handleEdit} setUpdate={this.setUpdate}/>
+        {this.state.showTag && <div id="to-do-forms"><input type="text" placeholder="Add tag" onChange={this.handleTagInput} ></input>
+          <button type="submit" onClick={() => this.addTag()}>HashTag</button></div>}
+        <ListItems items={this.state.items} deleteItem={this.deleteItem} completeItem={this.completeItem}
+                     handleEdit={this.handleEdit} setUpdate={this.setUpdate} addInputTag={this.addInputTag} filterHashTag={this.filterHashTag}/>
+
       </header>
     </div>
   );

@@ -18,11 +18,14 @@ function ListItems(props){
 
 
          <FontAwesomeIcon className="favicons" onClick={() => {
-             props.completeItem(item)}}
-                          icon="check" />
+             props.completeItem(item)}} icon="edit" />
+
+         <FontAwesomeIcon className="fav" onClick={() => {props.addInputTag(item)}} icon="plus" />
 
      </p>
-     
+           <p className="row" onClick={()=>{props.filterHashTag(item.tags[0])}}>{ item.tags.length>0 && item.tags[0]}</p>
+           <p className="row" onClick={()=>{props.filterHashTag(item.tags[1])}}>{item.tags.length>1 && item.tags[1]}</p>
+           <p className="row" onClick={()=>{props.filterHashTag(item.tags[2])}}>{item.tags.length>2 && item.tags[2]}</p>
     </div>})
     return <div>
         <FlipMove duration={300} easing="ease-in-out">

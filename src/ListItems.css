@@ -2,7 +2,7 @@
     color: #fff;
     width: 300px;
     margin: 20px auto;
-    height: 50px;
+    height: 63px;
     background-color: #bf07ac;
     border-radius: 5px;
 }
@@ -11,12 +11,29 @@
     position: relative;
     transition: ease-in-out;
 }
+
+.row{
+    display: flex;
+    float: left;
+    margin-top: -29px;
+}
 .list p input{
     background-color: transparent;
     border: 0;
     color: #fff;
     font-size: 18px;
 }
+
+.fav{
+    display: flex;
+    right: 47px;
+    position: absolute;
+    bottom: 13px;
+    margin: 0 30px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
 .list p input:focus{
     outline: none;
 }

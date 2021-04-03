@@ -37,6 +37,36 @@ body{
   outline: none;
 }
 
+#to-do-forms input{
+  background-color: rgba(27, 112, 137, 1);
+  border: 0;
+  color: #fff;
+  width: 200px;
+  height: 50px;
+  margin-top: -9px;
+  padding: 0 20px;
+  margin-left: 25px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+#to-do-forms input::placeholder{
+  color: rgba(255,255,255,0.5);
+}
+#to-do-forms input:focus{
+  outline: none;
+}
+#to-do-forms button{
+  height: 50px;
+  width: 80px;
+  border-radius: 5px;
+  border: 0; margin-left: 10px;
+  background-color:rgba(202, 156, 24, 1);
+  cursor: pointer;
+}
+#to-do-forms button:focus{
+  outline: none;
+}
+
 #clear-form button{
   height: 50px;
   width: 80px;
